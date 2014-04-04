@@ -22,17 +22,15 @@
 #include <string>
 
 enum  optionIndex { UNKNOWN, HELP, SIZE, PIPELINE};
-//enum  optionIndex { UNKNOWN, HELP, SIZE, FILENAME, PIPELINE};
 const dax::testing::option::Descriptor usage[] =
 {
   {UNKNOWN,   0,"" , ""    ,      dax::testing::option::Arg::None, "USAGE: example [options]\n\n"
                                                                     "Options:" },
   {HELP,      0,"h" , "help",      dax::testing::option::Arg::None, "  --help, -h  \tPrint usage and exit." },
   {SIZE,      0,"", "size",      dax::testing::option::Arg::Optional, "  --size  \t Size of the problem to test." },
-  //{FILENAME,   0,"", "filename",  dax::testing::option::Arg::Optional, "  --filename \t Name of file to be used." },
   {PIPELINE,  0,"", "pipeline",  dax::testing::option::Arg::Optional, "  --pipeline  \t What pipeline to run." },
   {UNKNOWN,   0,"",  "",          dax::testing::option::Arg::None, "\nExamples:\n"
-                                                                   " example --size=128 --filename=test.vtk --pipeline=1\n"},
+                                                                   " example --size=128 --pipeline=1\n"},
   {0,0,0,0,0,0}
 };
 
@@ -40,7 +38,6 @@ const dax::testing::option::Descriptor usage[] =
 //-----------------------------------------------------------------------------
 dax::testing::ArgumentsParser::ArgumentsParser():
   ProblemSize(128),
-  //dataFile("test.vtk"),
   Pipeline(MARCHING_CUBES)
 {
 }

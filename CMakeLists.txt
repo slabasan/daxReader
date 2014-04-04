@@ -15,6 +15,11 @@
 ##=============================================================================
 
 cmake_minimum_required(VERSION 2.8.10)
+
+# two lines added to change compiler to MPI for libmsr capabilities
+set(CMAKE_CXX_COMPILER "/usr/bin/mpic++")
+set(CMAKE_C_COMPILER "/usr/bin/mpicc")
+
 project (Dax)
 
 set(Dax_MAJOR_VERSION 0)
@@ -50,8 +55,8 @@ include(CMake/DaxCompilerExtras.cmake)
 
 #-----------------------------------------------------------------------------
 # Configurable Options
-option(DAX_ENABLE_CUDA "Enable Cuda support" ON)
-option(DAX_ENABLE_OPENMP "Enable OpenMP support" ON)
+option(DAX_ENABLE_CUDA "Enable Cuda support" OFF)
+option(DAX_ENABLE_OPENMP "Enable OpenMP support" OFF)
 option(DAX_ENABLE_TBB "Enable TBB support" OFF)
 option(DAX_ENABLE_TESTING "Enable DAX Testing" ON)
 option(DAX_ENABLE_DOXYGEN

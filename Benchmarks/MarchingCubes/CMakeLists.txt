@@ -63,7 +63,8 @@ set_source_files_properties(${headers} PROPERTIES HEADER_FILE_ONLY TRUE)
 #-----------------------------------------------------------------------------
 add_executable(MarchingCubesTimingSerial ${sources} ${headers} )
 set_dax_device_adapter(MarchingCubesTimingSerial DAX_DEVICE_ADAPTER_SERIAL)
-target_link_libraries(MarchingCubesTimingSerial)
+target_link_libraries(MarchingCubesTimingSerial /home/slabasan/libmsr_linuxbox/libmsr.so /home/slabasan/libmsr_linuxbox/libPowThermTest.so /home/slabasan/libmsr_linuxbox/libmsr.so /home/slabasan/libmsr_linuxbox/libPowThermTest.so)
+#target_link_libraries(MarchingCubesTimingSerial)
 add_timing_tests(MarchingCubesTimingSerial)
 add_resolveDuplicate_timing_tests(MarchingCubesTimingSerial)
 

@@ -62,12 +62,6 @@ void ReadData(std::vector<dax::Scalar> &buffer)
     fread(&buffer.front(), sizeof(float), GRID_SIZE*GRID_SIZE*GRID_SIZE, f);
     assert(ferror(f) == 0);
 
-    //SL: Confirming validity of data read in from file
-    //printf("grid size: %lf\n", GRID_SIZE);
-    //std::cout << "buffer: " << buffer.at(0) << std::endl;
-    //std::cout << "buffer: " << buffer.at(1) << std::endl;
-    //std::cout << "buffer: " << buffer.at(2) << std::endl;
-
     fclose(f);
 }
 
@@ -77,8 +71,8 @@ void RunDAXPipeline(const dax::cont::UniformGrid<> &grid, int pipeline, std::vec
  
   dax::cont::UnstructuredGrid<dax::CellTagTriangle> outGrid;
 
-  dax::cont::ArrayHandle<dax::Scalar> inArray = dax::cont::make_ArrayHandle(buffer);
-  cout << "length of inArray: " << inArray.GetNumberOfValues() << endl;
+  //dax::cont::ArrayHandle<dax::Scalar> inArray = dax::cont::make_ArrayHandle(buffer);
+  dax::cont::ArrayHandle<dax::Scalar> inArray = ReadData(&buffer);
   assert(grid.GetNumberOfPoints() == inArray.GetNumberOfValues());
 
   //dax::cont::ArrayHandle<dax::Scalar> intermediate1;

@@ -72,6 +72,7 @@ add_subdirectory(BlackScholes)
 add_subdirectory(FY11Timing)
 add_subdirectory(MarchingCubes)
 add_subdirectory(Threshold)
+#add_subdirectory(thresholdexample)
 
 
 #enable the benchmarks if we have glut and interop

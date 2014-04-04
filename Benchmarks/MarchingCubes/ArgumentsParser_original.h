@@ -16,8 +16,6 @@
 #ifndef __argumentsParser_h
 #define __argumentsParser_h
 
-using namespace std; 
-
 namespace dax { namespace testing {
 
 class ArgumentsParser
@@ -27,9 +25,6 @@ public:
   virtual ~ArgumentsParser();
 
   bool parseArguments(int argc, char* argv[]);
-
-  //std::string fileName() const
-   // { return this->dataFile; }
 
   unsigned int problemSize() const
     { return this->ProblemSize; }
@@ -45,7 +40,6 @@ public:
 
 private:
   unsigned int ProblemSize;
-  //std::string dataFile;
   PipelineMode Pipeline;
 };
 

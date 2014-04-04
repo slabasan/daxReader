@@ -31,38 +31,11 @@ dax::cont::UniformGrid<> CreateInputStructure(dax::Id dim)
   return grid;
 }
 
-//typedef dax::cont::UniformGrid UniformGridType;
-
-dax::cont::UniformGrid<> CreateUniformGrid(dax::Id dim)
-{
-  dax::cont::UniformGrid<> grid;
-  grid.SetExtent(dax::make_Id3(0, 0, 0), dax::make_Id3(dim-1, dim-1, dim-1));
-  return grid;
-}
-
-/*
- * Author: Stephanie
- * Description: Current command to execute MarchingCubes example in Dax.
- */
-//./MarchingCubes --size=512 --pipeline=1   
-
-/*
- * Author: Stephanie
- * Description: Fusion of exeuction commands for EAVL testiso and Dax
- *              MarchingCubes.
- */
-//./MarchingCubes 3.0 hardyglobal --pipeline=1 ../data.bov
-
 int main(int argc, char* argv[])
   {
-      /*
-       * Author: Stephanie
-       * Description: Lines needed for power capabilities
-       *
       MPI_Init(&argc, &argv);
       sleep(5);
       cerr << "Done sleeping" << endl;
-      */
 
   dax::testing::ArgumentsParser parser;
   if (!parser.parseArguments(argc, argv))
@@ -70,25 +43,16 @@ int main(int argc, char* argv[])
     return 1;
     }
 
-  //init grid size directly from *.bov file
-  const dax::Id MAX_SIZE = 50;  
+  //init grid vars from parser
+  const dax::Id MAX_SIZE = 128;
 
-  std::cout << "Reading data from visit_ex_db.bov..." << std::endl;
-  std::vector<dax::Scalar> buffer;
-  ReadData(buffer);
-  std::cout << "Data read." << std::endl << std::endl;
+  dax::cont::UniformGrid<> grid = CreateInputStructure(MAX_SIZE);
 
-  dax::cont::UniformGrid<> grid = CreateUniformGrid(MAX_SIZE);
+  RunDAXPipeline(grid, parser.pipeline());
 
-  RunDAXPipeline(grid, parser.pipeline(), buffer);
-
-  /*
-   * Author: Stephanie
-   * Description: Code to implement power sampling
   sleep(5);
   cerr << "Done sleeping" << endl;
   MPI_Finalize();
-   */
 
   return 0;
 }

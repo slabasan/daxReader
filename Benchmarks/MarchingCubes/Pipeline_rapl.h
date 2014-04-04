@@ -36,13 +36,10 @@
 #define MAKE_STRING1(x) MAKE_STRING2(x)
 #define DEVICE_ADAPTER MAKE_STRING1(DAX_DEFAULT_DEVICE_ADAPTER_TAG)
 
-
 namespace 
 {
-dax::Scalar ISOVALUE = 3.0;
-dax::Scalar GRID_SIZE = 50;
 
-typedef dax::cont::ArrayHandle<dax::Scalar> ArrayHandleScalar;
+dax::Scalar ISOVALUE = 3.0;
 
 void PrintResults(int pipeline, double time)
 {
@@ -51,39 +48,15 @@ void PrintResults(int pipeline, double time)
             << pipeline << "," << time << std::endl;
 }
 
-void ReadData(std::vector<dax::Scalar> &buffer)
-{
-    assert(sizeof(float) == sizeof(dax::Scalar));
-    
-    FILE *f = fopen("/home/slabasan/Dropbox/DaxDatasets/visit_ex_db.bov", "rb");
-    assert(f != NULL);
-
-    buffer.resize(GRID_SIZE*GRID_SIZE*GRID_SIZE);
-    fread(&buffer.front(), sizeof(float), GRID_SIZE*GRID_SIZE*GRID_SIZE, f);
-    assert(ferror(f) == 0);
-
-    //SL: Confirming validity of data read in from file
-    //printf("grid size: %lf\n", GRID_SIZE);
-    //std::cout << "buffer: " << buffer.at(0) << std::endl;
-    //std::cout << "buffer: " << buffer.at(1) << std::endl;
-    //std::cout << "buffer: " << buffer.at(2) << std::endl;
-
-    fclose(f);
-}
-
-void RunDAXPipeline(const dax::cont::UniformGrid<> &grid, int pipeline, std::vector<dax::Scalar> &buffer)
+void RunDAXPipeline(const dax::cont::UniformGrid<> &grid, int pipeline)
 {
   std::cout << "Running pipeline " << pipeline << ": Magnitude -> MarchingCubes" << std::endl;
- 
+
   dax::cont::UnstructuredGrid<dax::CellTagTriangle> outGrid;
 
-  dax::cont::ArrayHandle<dax::Scalar> inArray = dax::cont::make_ArrayHandle(buffer);
-  cout << "length of inArray: " << inArray.GetNumberOfValues() << endl;
-  assert(grid.GetNumberOfPoints() == inArray.GetNumberOfValues());
-
-  //dax::cont::ArrayHandle<dax::Scalar> intermediate1;
+  dax::cont::ArrayHandle<dax::Scalar> intermediate1;
   dax::cont::DispatcherMapField< dax::worklet::Magnitude > magDispatcher;
-  magDispatcher.Invoke( grid.GetPointCoordinates(), inArray);
+  magDispatcher.Invoke( grid.GetPointCoordinates(), intermediate1);
 
   dax::cont::Timer<> timer;
 
@@ -97,7 +70,7 @@ void RunDAXPipeline(const dax::cont::UniformGrid<> &grid, int pipeline, std::vec
   //run the first step
   CountHandleType count; //array handle for the first step count
   dax::cont::DispatcherMapCell<dax::worklet::MarchingCubesCount > cellDispatcher( classifyWorklet );
-  cellDispatcher.Invoke(grid, inArray, count);
+  cellDispatcher.Invoke(grid, intermediate1, count);
 
   //construct the topology generation worklet
   DispatcherIC icDispatcher(count, generateWorklet );
@@ -105,7 +78,7 @@ void RunDAXPipeline(const dax::cont::UniformGrid<> &grid, int pipeline, std::vec
                 pipeline == dax::testing::ArgumentsParser::MARCHING_CUBES_REMOVE_DUPLICATES);
 
   //run the second step
-  icDispatcher.Invoke(grid, outGrid, inArray);
+  icDispatcher.Invoke(grid, outGrid, intermediate1);
 
   double time = timer.GetElapsedTime();
 
