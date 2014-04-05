@@ -71,9 +71,9 @@ int main(int argc, char* argv[])
     }
 
   //init grid size directly from *.bov file
-  const dax::Id MAX_SIZE = 50;  
+  const dax::Id MAX_SIZE = 400;  
 
-  std::cout << "Reading data from visit_ex_db.bov..."<< std::endl;
+  std::cout << "Reading data from visit_ex_db.bov..." << std::endl;
   std::vector<dax::Scalar> buffer;
   ReadData(buffer);
   std::cout << "Data read." << std::endl << std::endl;

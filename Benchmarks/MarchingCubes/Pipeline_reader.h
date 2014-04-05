@@ -19,7 +19,7 @@
 #include <dax/cont/ArrayHandle.h>
 #include <dax/cont/DispatcherGenerateInterpolatedCells.h>
 #include <dax/cont/DispatcherMapCell.h>
-#include <dax/cont/DispatcherMapField.h>
+#include <dax/cont/DispatcherMapField.h> 
 #include <dax/cont/Timer.h>
 #include <dax/cont/UniformGrid.h>
 #include <dax/cont/UnstructuredGrid.h>
@@ -39,10 +39,10 @@
 
 namespace 
 {
-dax::Scalar ISOVALUE = 3.0;
-dax::Scalar GRID_SIZE = 50;
+dax::Scalar ISOVALUE = 400;
+dax::Scalar GRID_SIZE = 400;
 
-typedef dax::cont::ArrayHandle<dax::Scalar> ArrayHandleScalar;
+//typedef dax::cont::ArrayHandle<dax::Scalar> ArrayHandleScalar;
 
 void PrintResults(int pipeline, double time)
 {
@@ -55,12 +55,21 @@ void ReadData(std::vector<dax::Scalar> &buffer)
 {
     assert(sizeof(float) == sizeof(dax::Scalar));
     
-    FILE *f = fopen("/home/slabasan/Dropbox/DaxDatasets/visit_ex_db.bov", "rb");
+    FILE *f = fopen("/home/slabasan/Dropbox/DaxDatasets/counts.400.400.400", "rb");
     assert(f != NULL);
 
     buffer.resize(GRID_SIZE*GRID_SIZE*GRID_SIZE);
     fread(&buffer.front(), sizeof(float), GRID_SIZE*GRID_SIZE*GRID_SIZE, f);
     assert(ferror(f) == 0);
+
+    //SL: Confirming validity of data read in from file
+    //printf("grid size: %lf\n", GRID_SIZE);
+    //std::cout << "buffer: " << buffer.at(0) << std::endl;
+    //std::cout << "buffer: " << buffer.at(1) << std::endl;
+    //std::cout << "buffer: " << buffer.at(2) << std::endl;
+    //std::cout << "buffer: " << buffer.at(3) << std::endl;
+    //std::cout << "buffer: " << buffer.at(4) << std::endl;
+    //std::cout << "buffer: " << buffer.at(5) << std::endl;
 
     fclose(f);
 }
@@ -71,13 +80,13 @@ void RunDAXPipeline(const dax::cont::UniformGrid<> &grid, int pipeline, std::vec
  
   dax::cont::UnstructuredGrid<dax::CellTagTriangle> outGrid;
 
-  //dax::cont::ArrayHandle<dax::Scalar> inArray = dax::cont::make_ArrayHandle(buffer);
-  dax::cont::ArrayHandle<dax::Scalar> inArray = ReadData(&buffer);
+  dax::cont::ArrayHandle<dax::Scalar> inArray = dax::cont::make_ArrayHandle(buffer);
+  std::cout << "size of input data: " << inArray.GetNumberOfValues() << std::endl;
   assert(grid.GetNumberOfPoints() == inArray.GetNumberOfValues());
 
   //dax::cont::ArrayHandle<dax::Scalar> intermediate1;
-  dax::cont::DispatcherMapField< dax::worklet::Magnitude > magDispatcher;
-  magDispatcher.Invoke( grid.GetPointCoordinates(), inArray);
+  //dax::cont::DispatcherMapField< dax::worklet::Magnitude > magDispatcher;
+  //magDispatcher.Invoke( grid.GetPointCoordinates(), inArray);
 
   dax::cont::Timer<> timer;
 

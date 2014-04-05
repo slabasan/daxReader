@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     }
 
   //init grid vars from parser
-  const dax::Id MAX_SIZE = 128;
+  const dax::Id MAX_SIZE = 400;
 
   dax::cont::UniformGrid<> grid = CreateInputStructure(MAX_SIZE);
 

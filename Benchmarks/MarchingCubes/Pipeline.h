@@ -19,7 +19,7 @@
 #include <dax/cont/ArrayHandle.h>
 #include <dax/cont/DispatcherGenerateInterpolatedCells.h>
 #include <dax/cont/DispatcherMapCell.h>
-#include <dax/cont/DispatcherMapField.h>
+#include <dax/cont/DispatcherMapField.h> 
 #include <dax/cont/Timer.h>
 #include <dax/cont/UniformGrid.h>
 #include <dax/cont/UnstructuredGrid.h>
@@ -39,8 +39,8 @@
 
 namespace 
 {
-dax::Scalar ISOVALUE = 3.0;
-dax::Scalar GRID_SIZE = 50;
+dax::Scalar ISOVALUE = 400;
+dax::Scalar GRID_SIZE = 400;
 
 //typedef dax::cont::ArrayHandle<dax::Scalar> ArrayHandleScalar;
 
@@ -55,7 +55,7 @@ void ReadData(std::vector<dax::Scalar> &buffer)
 {
     assert(sizeof(float) == sizeof(dax::Scalar));
     
-    FILE *f = fopen("/home/slabasan/Dropbox/DaxDatasets/visit_ex_db", "rb");
+    FILE *f = fopen("/home/slabasan/Dropbox/DaxDatasets/counts.400.400.400", "rb");
     assert(f != NULL);
 
     buffer.resize(GRID_SIZE*GRID_SIZE*GRID_SIZE);
@@ -64,12 +64,12 @@ void ReadData(std::vector<dax::Scalar> &buffer)
 
     //SL: Confirming validity of data read in from file
     //printf("grid size: %lf\n", GRID_SIZE);
-    std::cout << "buffer: " << buffer.at(0) << std::endl;
-    std::cout << "buffer: " << buffer.at(1) << std::endl;
-    std::cout << "buffer: " << buffer.at(2) << std::endl;
-    std::cout << "buffer: " << buffer.at(3) << std::endl;
-    std::cout << "buffer: " << buffer.at(4) << std::endl;
-    std::cout << "buffer: " << buffer.at(5) << std::endl;
+    //std::cout << "buffer: " << buffer.at(0) << std::endl;
+    //std::cout << "buffer: " << buffer.at(1) << std::endl;
+    //std::cout << "buffer: " << buffer.at(2) << std::endl;
+    //std::cout << "buffer: " << buffer.at(3) << std::endl;
+    //std::cout << "buffer: " << buffer.at(4) << std::endl;
+    //std::cout << "buffer: " << buffer.at(5) << std::endl;
 
     fclose(f);
 }
